@@ -2,7 +2,7 @@
 
 Sistem backend Laravel 12 untuk integrasi dengan JoyTel API yang mendukung Warehouse API (System 1) dan RSP API (System 2).
 
-## 🚀 Features
+## Features
 
 - ✅ **Warehouse API Integration** (eSIM Order, OTA Recharge)
 - ✅ **RSP API Integration** (Coupon Redeem, eSIM Management) 
@@ -14,7 +14,7 @@ Sistem backend Laravel 12 untuk integrasi dengan JoyTel API yang mendukung Wareh
 - ✅ **Database Migrations**
 - ✅ **Error Handling & Retry Logic**
 
-## 📋 Requirements
+## Requirements
 
 - PHP 8.2 atau lebih tinggi
 - Laravel 12
@@ -22,7 +22,7 @@ Sistem backend Laravel 12 untuk integrasi dengan JoyTel API yang mendukung Wareh
 - Redis (optional, untuk caching)
 - Supervisor (untuk production queue workers)
 
-## ⚙️ Installation
+## Installation
 
 ### 1. Clone & Setup Project
 
@@ -95,14 +95,14 @@ sudo supervisorctl update
 sudo supervisorctl start joytel-workers:*
 ```
 
-## 📖 API Documentation
+## API Documentation
 
 ### Base URL
 ```
 http://your-domain.com/api
 ```
 
-### 1. Submit eSIM Order
+### Submit eSIM Order
 
 **POST** `/orders`
 
@@ -170,7 +170,7 @@ http://your-domain.com/api
 
 **GET** `/orders?per_page=10&status=completed&system_type=warehouse`
 
-## 🔄 Webhook Endpoints
+## Webhook Endpoints
 
 ### 1. SN/PIN Callback (Warehouse)
 **POST** `/webhook/sn-pin`
@@ -184,7 +184,7 @@ http://your-domain.com/api
 ### 4. eSIM Progress Notification (RSP)
 **POST** `/webhook/notify/esim/esim-progress`
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 app/
@@ -202,7 +202,7 @@ app/
     └── RedeemCouponJob.php   # Async coupon redemption
 ```
 
-## 🔒 Security Features
+## Security Features
 
 ### Signature Validation
 
@@ -226,7 +226,7 @@ $ciphertext = md5($appId . $transId . $timestamp . $appSecret);
 - Error tracking dengan context
 - Performance monitoring
 
-## 📊 Database Schema
+## Database Schema
 
 ### Orders Table
 ```sql
@@ -257,7 +257,7 @@ $ciphertext = md5($appId . $transId . $timestamp . $appSecret);
 - timestamps
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Error Codes
 ```php
@@ -281,7 +281,7 @@ $ciphertext = md5($appId . $transId . $timestamp . $appSecret);
 ]
 ```
 
-## 🚀 Production Deployment
+## Production Deployment
 
 ### 1. Server Requirements
 - PHP 8.2+ dengan extensions: mbstring, zip, xml, curl, json
@@ -313,7 +313,7 @@ php artisan queue:monitor joytel,default --max-time=3600
 - Queue status: `php artisan queue:failed`
 - Health check: `GET /api/utils/health`
 
-## 🧪 Testing
+## Testing
 
 ### Unit Tests
 ```bash
@@ -346,11 +346,11 @@ curl -X POST http://localhost:8000/api/webhook/sn-pin \
   }'
 ```
 
-## 📝 Examples
+## Examples
 
 Lihat file `examples/joytel_examples.php` untuk contoh lengkap penggunaan API.
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -372,13 +372,13 @@ php artisan config:show joytel
 tail -f storage/logs/laravel.log
 ```
 
-## 📞 Support
+## Support
 
 Untuk pertanyaan atau issues:
 1. Check logs di `storage/logs/`
 2. Review JoyTel API documentation
 3. Submit issue dengan log details
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
