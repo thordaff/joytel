@@ -15,18 +15,28 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/www/html/joytel
-            git pull origin main
-            
-            # Install & Build dengan Bun
-            ~/.bash/bun install
-            ~/.bash/bun run build
-            
-            # Backend Setup
+            # 1. Pindah ke folder project atau stop jika folder tidak ada
+            cd /var/www/html/joytel || exit
+
+            # 2. Paksa update (menghapus file yang didelete di GitHub)
+            git fetch --all
+            git reset --hard origin/main
+
+            # 3. Load path Bun secara manual (Penting agar perintah 'bun' ditemukan)
+            export BUN_INSTALL="$HOME/.bun"
+            export PATH="$BUN_INSTALL/bin:$PATH"
+
+            # 4. Frontend: Install & Build
+            bun install
+            bun run build
+
+            # 5. Backend: Install & Optimization
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
+            php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
-            
-            # Perbaiki Izin Folder (jika perlu)
-            sudo chown -R www-data:www-data storage bootstrap/cache
+            php artisan view:cache
+
+            # 6. Izin Folder (Tanpa sudo jika owner sudah dev)
+            chmod -R 775 storage bootstrap/cache
