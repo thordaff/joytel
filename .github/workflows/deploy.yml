@@ -16,22 +16,30 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /var/www/html/joytel || exit
-
-            # Langkah krusial agar file PDF terhapus:
+            
+            # Fix Git Security & Sync
+            git config --global --add safe.directory /var/www/html/joytel
             git fetch origin main
             git reset --hard origin/main
-
-            export BUN_INSTALL="$HOME/.bun"
+            
+            # Setup Bun (Sesuaikan /root/ atau /home/dev/)
+            export BUN_INSTALL="/root/.bun"
             export PATH="$BUN_INSTALL/bin:$PATH"
-
+            
+            # Frontend
             bun install
-            bunx vite build
-
+            bun run build
+            
+            # Backend (PHP 8.4 Ready)
+            export COMPOSER_ALLOW_SUPERUSER=1
             composer install --no-dev --optimize-autoloader
+            
+            # Laravel Ops
             php artisan migrate --force
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
-            php artisan view:cache
-
+            
+            # Permissions
+            chown -R root:www-data .
             chmod -R 775 storage bootstrap/cache
