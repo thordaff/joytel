@@ -1,0 +1,32 @@
+name: joytel
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/html/joytel
+            git pull origin main
+            
+            # Install & Build dengan Bun
+            ~/.bash/bun install
+            ~/.bash/bun run build
+            
+            # Backend Setup
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            
+            # Perbaiki Izin Folder (jika perlu)
+            sudo chown -R www-data:www-data storage bootstrap/cache
