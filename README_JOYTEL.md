@@ -16,7 +16,7 @@ Sistem backend Laravel 12 untuk integrasi dengan JoyTel API yang mendukung Wareh
 
 ## Requirements
 
-- PHP 8.2 atau lebih tinggi
+- PHP 8.4 atau lebih tinggi
 - Laravel 12
 - MariaDB/MySQL
 - Redis (optional, untuk caching)
