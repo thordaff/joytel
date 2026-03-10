@@ -19,8 +19,8 @@ jobs:
             cd /var/www/html/joytel || exit
 
             # 2. Paksa update (menghapus file yang didelete di GitHub)
-            git fetch --all
-            git reset --hard origin/main
+            git pull origin main
+            git fetch origin main
 
             # 3. Load path Bun secara manual (Penting agar perintah 'bun' ditemukan)
             export BUN_INSTALL="$HOME/.bun"
