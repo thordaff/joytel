@@ -5,10 +5,30 @@
  * This file demonstrates how to use the JoyTel integration API
  */
 
+$projectRoot = dirname(__DIR__);
+
+if (file_exists($projectRoot . '/vendor/autoload.php')) {
+    require_once $projectRoot . '/vendor/autoload.php';
+}
+
 echo "=== JoyTel API Integration Examples ===\n\n";
 
-// Base URL for your Laravel API
-$baseUrl = 'http://localhost:8000/api';
+function resolveAppUrl(string $projectRoot): string {
+    if (class_exists(\Dotenv\Dotenv::class)) {
+        \Dotenv\Dotenv::createImmutable($projectRoot)->safeLoad();
+    }
+
+    $appUrl = $_ENV['APP_URL'] ?? getenv('APP_URL');
+
+    if (!$appUrl) {
+        throw new \RuntimeException('APP_URL is not set. Please configure APP_URL in your .env file.');
+    }
+
+    return rtrim($appUrl, '/');
+}
+
+// Base URL for your Laravel API (derived from APP_URL in .env)
+$baseUrl = resolveAppUrl($projectRoot) . '/api';
 
 /**
  * Example 1: Submit eSIM Order (Warehouse System)
