@@ -45,4 +45,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isDev(): bool
+    {
+        return $this->email === config('auth.joytel_users.dev_email');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->email === config('auth.joytel_users.admin_email');
+    }
+
+    public function hasJoytelRole(string $role): bool
+    {
+        return match (strtolower($role)) {
+            'dev' => $this->isDev(),
+            'admin' => $this->isAdmin(),
+            default => false,
+        };
+    }
 }

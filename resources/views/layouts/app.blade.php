@@ -84,12 +84,14 @@
                                 <i class="bi bi-file-text"></i> API Logs
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('settings*') ? 'active' : '' }}" 
-                               href="{{ route('settings.joytel') }}">
-                                <i class="bi bi-gear"></i> Settings
-                            </a>
-                        </li>
+                        @if(auth()->user()?->isDev())
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('settings*') ? 'active' : '' }}" 
+                                   href="{{ route('settings.joytel') }}">
+                                    <i class="bi bi-gear"></i> Settings
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" href="{{ config('app.url') }}/api/utils/health" target="_blank">
                                 <i class="bi bi-heart-pulse"></i> Health Check
@@ -114,6 +116,18 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">@yield('page-title', 'Dashboard')</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
+                        @auth
+                            <div class="me-3 text-end">
+                                <div class="small text-muted">{{ auth()->user()->email }}</div>
+                                <div class="small fw-semibold text-uppercase">{{ auth()->user()->isDev() ? 'Dev' : 'Admin' }}</div>
+                            </div>
+                            <form method="POST" action="{{ route('logout') }}" class="me-2">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </button>
+                            </form>
+                        @endauth
                         @yield('page-actions')
                     </div>
                 </div>

@@ -112,4 +112,9 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'joytel_users' => [
+        'dev_email' => env('JOYTEL_DEV_EMAIL', 'dev@joytel.com'),
+        'admin_email' => env('JOYTEL_ADMIN_EMAIL', 'admin@joytel.com'),
+    ],
+
 ];
