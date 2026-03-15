@@ -192,7 +192,10 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            Product::create($product);
+            Product::updateOrCreate(
+                ['product_code' => $product['product_code']],
+                $product
+            );
         }
 
         $this->command->info('Products seeded successfully!');
